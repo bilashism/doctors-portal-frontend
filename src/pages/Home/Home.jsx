@@ -5,6 +5,7 @@ import Banner from "./Banner";
 import Header from "./Header";
 import InfoCards from "./InfoCards";
 import Services from "./Services/Services";
+import Testimonials from "./Testimonials/Testimonials";
 
 const Home = () => {
   useTitle("Home");
@@ -15,6 +16,7 @@ const Home = () => {
       <Services />
       <Banner />
       <AppointmentBanner />
+      <Testimonials />
     </>
   );
 };
