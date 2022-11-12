@@ -1,5 +1,6 @@
 import React from "react";
 import useTitle from "../../hooks/useTitle";
+import AppointmentBanner from "./AppointmentBanner/AppointmentBanner";
 import Banner from "./Banner";
 import Header from "./Header";
 import InfoCards from "./InfoCards";
@@ -13,6 +14,7 @@ const Home = () => {
       <InfoCards />
       <Services />
       <Banner />
+      <AppointmentBanner />
     </>
   );
 };
