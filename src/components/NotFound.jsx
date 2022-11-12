@@ -1,8 +1,10 @@
 import React from "react";
 import { Link, useRouteError } from "react-router-dom";
+import useTitle from "../hooks/useTitle";
 
 const NotFound = () => {
   let error = useRouteError();
+  useTitle(`Error`);
 
   return (
     <div className="text-center">
