@@ -1,10 +1,18 @@
-import React from "react";
+import React, { createContext, useState } from "react";
 import AppointmentHero from "./AppointmentHero";
+import AvailableAppointment from "./AvailableAppointment";
+export const AppointmentAvailabilityContext = createContext();
 
 const Appointment = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   return (
     <div className="">
-      <AppointmentHero />
+      <AppointmentAvailabilityContext.Provider
+        value={{ selectedDate, setSelectedDate }}>
+        <AppointmentHero />
+        <AvailableAppointment />
+      </AppointmentAvailabilityContext.Provider>
     </div>
   );
 };

@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-const Testimonial = ({ review }) => {
+function Testimonial({ review }) {
   const { _id, name, location, reviewText, img } = review;
   return (
     <article className="px-4 py-6 shadow-lg shadow-slate-500 rounded-2xl">
@@ -26,6 +26,6 @@ const Testimonial = ({ review }) => {
       </div>
     </article>
   );
-};
+}
 
 export default Testimonial;

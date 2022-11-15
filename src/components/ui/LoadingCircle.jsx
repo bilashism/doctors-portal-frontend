@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
 /**
  * It returns a figure element with an image element inside of it.
  * @returns A React component.
  */
-const LoadingCircle = () => {
+function LoadingCircle() {
   return (
     <figure className="text-center">
       <img
@@ -18,6 +18,6 @@ const LoadingCircle = () => {
       />
     </figure>
   );
-};
+}
 
 export default LoadingCircle;

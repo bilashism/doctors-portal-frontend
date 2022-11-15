@@ -2,7 +2,7 @@ import React from "react";
 import bannerImg from "../../images/treatment.png";
 import bannerBgImg from "../../images/bg.png";
 
-const Banner = () => {
+function Banner() {
   return (
     <header className="">
       <div className="container mx-auto px-4">
@@ -60,6 +60,6 @@ const Banner = () => {
       </div>
     </header>
   );
-};
+}
 
 export default Banner;

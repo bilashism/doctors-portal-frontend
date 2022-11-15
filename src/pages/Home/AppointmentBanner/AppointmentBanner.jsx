@@ -2,7 +2,7 @@ import React from "react";
 import doctorImg from "../../../images/doctor.png";
 import appointmentBgImg from "../../../images/appointment.png";
 
-const AppointmentBanner = () => {
+function AppointmentBanner() {
   return (
     <section className="my-20 relative isolate">
       <div className="container mx-auto px-4">
@@ -44,6 +44,6 @@ const AppointmentBanner = () => {
       </div>
     </section>
   );
-};
+}
 
 export default AppointmentBanner;

@@ -1,35 +1,36 @@
-import React from "react";
-import quoteImg from "../../../images/icons/quote.svg";
-import people1 from "../../../images/people1.png";
-import people2 from "../../../images/people2.png";
-import people3 from "../../../images/people3.png";
-import Testimonial from "./Testimonial";
-const Testimonials = () => {
+import React from 'react';
+import quoteImg from '../../../images/icons/quote.svg';
+import people1 from '../../../images/people1.png';
+import people2 from '../../../images/people2.png';
+import people3 from '../../../images/people3.png';
+import Testimonial from './Testimonial';
+
+function Testimonials() {
   const reviewsData = [
     {
       _id: 1,
-      name: "Winson Herry 1",
+      name: 'Winson Herry 1',
       reviewText:
-        "It is a long established fact that by the readable content of a lot layout. The point of using Lorem a more-or-less normal distribu to using Content here, content",
-      location: "California",
-      img: people1
+        'It is a long established fact that by the readable content of a lot layout. The point of using Lorem a more-or-less normal distribu to using Content here, content',
+      location: 'California',
+      img: people1,
     },
     {
       _id: 2,
-      name: "Winson Herry 2",
+      name: 'Winson Herry 2',
       reviewText:
-        "It is a long established fact that by the readable content of a lot layout. The point of using Lorem a more-or-less normal distribu to using Content here, content",
-      location: "California",
-      img: people2
+        'It is a long established fact that by the readable content of a lot layout. The point of using Lorem a more-or-less normal distribu to using Content here, content',
+      location: 'California',
+      img: people2,
     },
     {
       _id: 3,
-      name: "Winson Herry 3",
+      name: 'Winson Herry 3',
       reviewText:
-        "It is a long established fact that by the readable content of a lot layout. The point of using Lorem a more-or-less normal distribu to using Content here, content",
-      location: "California",
-      img: people3
-    }
+        'It is a long established fact that by the readable content of a lot layout. The point of using Lorem a more-or-less normal distribu to using Content here, content',
+      location: 'California',
+      img: people3,
+    },
   ];
 
   return (
@@ -54,13 +55,13 @@ const Testimonials = () => {
         </div>
 
         <div className="grid gap-8 lg:grid-cols-3 py-10">
-          {reviewsData.map(review => (
+          {reviewsData.map((review) => (
             <Testimonial key={review._id} review={review} />
           ))}
         </div>
       </div>
     </section>
   );
-};
+}
 
 export default Testimonials;
