@@ -8,8 +8,14 @@ import { AuthContext } from "../../context/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
 import { GoogleAuthProvider } from "firebase/auth";
 import { APP_SERVER } from "../../utilities/utilities";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit
+  } = useForm();
   const { userLogin, setAuthLoading, providerLogin } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,61 +26,37 @@ const Login = () => {
   useTitle("Login");
   const emailRef = useRef();
   const passwordRef = useRef();
-  const getToken = data => {
-    fetch(`${APP_SERVER}/jwt`, {
-      method: "post",
-      headers: {
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-      .then(res => res.json())
-      .then(data => {
-        localStorage.setItem("Token", data.token);
-      })
-      .catch(err => console.error(err));
-  };
+  // const getToken = data => {
+  //   fetch(`${APP_SERVER}/jwt`, {
+  //     method: "post",
+  //     headers: {
+  //       "content-type": "application/json"
+  //     },
+  //     body: JSON.stringify(data)
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       localStorage.setItem("Token", data.token);
+  //     })
+  //     .catch(err => console.error(err));
+  // };
   // handle User Login form
-  const handleUserLogin = ev => {
-    ev.preventDefault();
-    const form = ev.target;
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-
-    if (email && password) {
-      userLogin(email, password)
-        .then(data => {
-          toast.success("Logged in successfully!");
-          form.reset();
-
-          const curUser = { email: data.user.email };
-          // get jwt token
-          getToken(curUser);
-
-          navigate(from, { replace: true });
-        })
-        .catch(err => {
-          err?.code && toast.error(err.code);
-          console.error(err);
-        })
-        .finally(() => {
-          setAuthLoading(false);
-        });
-    }
+  const handleUserLogin = data => {
+    console.log(data);
   };
 
   const handleProviderLogIn = provider => {
-    providerLogin(provider)
-      .then(data => {
-        toast.success("Logged in successfully!");
-        const curUser = { email: data.user.email };
-        getToken(curUser);
-        navigate(from, { replace: true });
-      })
-      .catch(err => {
-        err?.code && toast.error(err.code);
-        console.error(err);
-      });
+    // providerLogin(provider)
+    //   .then(data => {
+    //     toast.success("Logged in successfully!");
+    //     const curUser = { email: data.user.email };
+    //     // getToken(curUser);
+    //     navigate(from, { replace: true });
+    //   })
+    //   .catch(err => {
+    //     err?.code && toast.error(err.code);
+    //     console.error(err);
+    //   });
   };
 
   return (
@@ -86,7 +68,7 @@ const Login = () => {
 
         <div className="grid lg:grid-cols-2 lg:items-center gap-16">
           <div className="flex flex-col gap-8 ">
-            <form onSubmit={handleUserLogin}>
+            <form onSubmit={handleSubmit(handleUserLogin)}>
               <div className="relative z-0 mb-6 w-full group">
                 <input
                   type="email"
@@ -96,13 +78,14 @@ const Login = () => {
                   placeholder=" "
                   required=""
                   autoComplete="username"
-                  ref={emailRef}
+                  {...register("email", { required: "Email is mandatory" })}
                 />
                 <label
                   htmlFor="email"
                   className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                   Email address
                 </label>
+                {errors.email && <p role="alert">{errors.email?.message}</p>}
               </div>
               <div className="relative z-0 mb-6 w-full group">
                 <input
@@ -113,14 +96,22 @@ const Login = () => {
                   placeholder=" "
                   required=""
                   autoComplete="current-password"
-                  ref={passwordRef}
-                  minLength="6"
+                  {...register("password", {
+                    required: "Password is must",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be 6 chars long"
+                    }
+                  })}
                 />
                 <label
                   htmlFor="password"
                   className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                   Your password
                 </label>
+                {errors.password && (
+                  <p role="alert">{errors.password?.message}</p>
+                )}
               </div>
 
               <div className="pb-4 text-center text-slate-600">
