@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
+import { APP_SERVER } from "../../utilities/utilities";
 import { AppointmentAvailabilityContext } from "./Appointment";
 import AppointmentOption from "./AppointmentOption";
 import BookingModal from "./BookingModal";
@@ -13,7 +14,7 @@ const AvailableAppointment = () => {
   const [treatment, setTreatment] = useState(null);
 
   useEffect(() => {
-    fetch(`appointmentOptions.json`)
+    fetch(`${APP_SERVER}/appointmentOptions`)
       .then(res => res.json())
       .then(data => {
         setAppointmentOptions(data);
