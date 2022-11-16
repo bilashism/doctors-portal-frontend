@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useTitle from "../../hooks/useTitle";
 import loginImg from "../../images/logo.svg";
@@ -13,6 +13,8 @@ import { useForm } from "react-hook-form";
 const Login = () => {
   const {
     register,
+    formState,
+    reset,
     formState: { errors },
     handleSubmit
   } = useForm();
@@ -24,8 +26,14 @@ const Login = () => {
   // console.log(location);
   const googleProvider = new GoogleAuthProvider();
   useTitle("Login");
-  const emailRef = useRef();
-  const passwordRef = useRef();
+
+  // reset the form after successful submission
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset();
+    }
+  }, [formState, reset]);
+
   // const getToken = data => {
   //   fetch(`${APP_SERVER}/jwt`, {
   //     method: "post",
@@ -40,23 +48,42 @@ const Login = () => {
   //     })
   //     .catch(err => console.error(err));
   // };
+
   // handle User Login form
   const handleUserLogin = data => {
     console.log(data);
+    const { email, password } = data;
+    userLogin(email, password)
+      .then(user => {
+        toast.success("Login successful!");
+        // form.reset();
+        navigate(from, { replace: true });
+        console.log(user);
+      })
+      .catch(err => {
+        err?.code && toast.error(err.code);
+        console.error(err);
+      })
+      .finally(() => {
+        setAuthLoading(false);
+      });
   };
 
   const handleProviderLogIn = provider => {
-    // providerLogin(provider)
-    //   .then(data => {
-    //     toast.success("Logged in successfully!");
-    //     const curUser = { email: data.user.email };
-    //     // getToken(curUser);
-    //     navigate(from, { replace: true });
-    //   })
-    //   .catch(err => {
-    //     err?.code && toast.error(err.code);
-    //     console.error(err);
-    //   });
+    providerLogin(provider)
+      .then(data => {
+        toast.success("Logged in successfully!");
+        const curUser = { email: data.user.email };
+        // getToken(curUser);
+        navigate(from, { replace: true });
+      })
+      .catch(err => {
+        err?.code && toast.error(err.code);
+        console.error(err);
+      })
+      .finally(() => {
+        setAuthLoading(false);
+      });
   };
 
   return (

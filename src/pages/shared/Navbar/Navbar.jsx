@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import LoadingCircle from "../../../components/ui/LoadingCircle";
+import { AuthContext } from "../../../context/AuthProvider/AuthProvider";
 import logo from "../../../images/logo.svg";
 import { APP_NAME } from "../../../utilities/utilities";
 
 const Navbar = () => {
+  const { user, userLogOut, authLoading } = useContext(AuthContext);
+
   const menuItems = (
     <>
       <li>
@@ -26,11 +30,28 @@ const Navbar = () => {
           reviews
         </Link>
       </li>
-      <li>
-        <Link to="/login" className="capitalize">
-          login
-        </Link>
-      </li>
+      {authLoading ? (
+        <LoadingCircle />
+      ) : user?.uid ? (
+        <>
+          <li>
+            <Link to="/dashboard" className="capitalize">
+              dashboard
+            </Link>
+          </li>
+          <li>
+            <button type="button" onClick={userLogOut}>
+              Log out
+            </button>
+          </li>
+        </>
+      ) : (
+        <li>
+          <Link to="/login" className="capitalize">
+            login
+          </Link>
+        </li>
+      )}
     </>
   );
 
