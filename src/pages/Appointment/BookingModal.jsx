@@ -38,11 +38,19 @@ const BookingModal = ({ treatment, setTreatment, refetch }) => {
       .then(data => {
         if (data?.acknowledged) {
           toast.success("Your booking is confirmed.");
-          setTreatment(null);
           refetch();
         }
+        if (!data?.acknowledged) {
+          toast.error(data?.message);
+        }
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        toast.error(`Something went wrong. Please try again.`);
+        console.error(err);
+      })
+      .finally(() => {
+        setTreatment(null);
+      });
   };
   return (
     <>
