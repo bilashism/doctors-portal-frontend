@@ -11,14 +11,22 @@ const AvailableAppointment = () => {
   const { selectedDate, setSelectedDate } = useContext(
     AppointmentAvailabilityContext
   );
-
+  const formattedDate = format(selectedDate, "PP");
   const [treatment, setTreatment] = useState(null);
 
-  const { data: appointmentOptions, isLoading } = useQuery({
-    queryKey: ["appointmentOptions"],
+  const {
+    data: appointmentOptions,
+    isLoading,
+    refetch
+  } = useQuery({
+    queryKey: ["appointmentOptions", formattedDate],
     queryFn: () =>
-      fetch(`${APP_SERVER}/appointmentOptions`).then(res => res.json())
+      fetch(`${APP_SERVER}/appointmentOptions?date=${formattedDate}`).then(
+        res => res.json()
+      )
   });
+
+  if (isLoading) return <LoadingCircle />;
 
   return (
     <section className="py-16">
@@ -28,21 +36,21 @@ const AvailableAppointment = () => {
           <span className="text-blue-600">{format(selectedDate, "PP")}</span>
         </h2>
         <div className="grid gap-8 lg:grid-cols-3 my-10">
-          {isLoading ? (
-            <LoadingCircle />
-          ) : (
-            appointmentOptions.map(appointmentOption => (
-              <AppointmentOption
-                key={appointmentOption._id}
-                appointmentOption={appointmentOption}
-                setTreatment={setTreatment}
-              />
-            ))
-          )}
+          {appointmentOptions.map(appointmentOption => (
+            <AppointmentOption
+              key={appointmentOption._id}
+              appointmentOption={appointmentOption}
+              setTreatment={setTreatment}
+            />
+          ))}
         </div>
         <div className="">
           {treatment && (
-            <BookingModal treatment={treatment} setTreatment={setTreatment} />
+            <BookingModal
+              treatment={treatment}
+              setTreatment={setTreatment}
+              refetch={refetch}
+            />
           )}
         </div>
       </div>
