@@ -12,6 +12,7 @@
     "package-update": "ncu --interactive --format group"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.16.1",
     "daisyui": "^2.39.1",
     "date-fns": "^2.29.3",
     "firebase": "^9.14.0",

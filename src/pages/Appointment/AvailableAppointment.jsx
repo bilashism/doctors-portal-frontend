@@ -1,5 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
+import LoadingCircle from "../../components/ui/LoadingCircle";
 import { APP_SERVER } from "../../utilities/utilities";
 import { AppointmentAvailabilityContext } from "./Appointment";
 import AppointmentOption from "./AppointmentOption";
@@ -10,17 +12,13 @@ const AvailableAppointment = () => {
     AppointmentAvailabilityContext
   );
 
-  const [appointmentOptions, setAppointmentOptions] = useState([]);
   const [treatment, setTreatment] = useState(null);
 
-  useEffect(() => {
-    fetch(`${APP_SERVER}/appointmentOptions`)
-      .then(res => res.json())
-      .then(data => {
-        setAppointmentOptions(data);
-      })
-      .catch(err => console.error(err));
-  }, []);
+  const { data: appointmentOptions, isLoading } = useQuery({
+    queryKey: ["appointmentOptions"],
+    queryFn: () =>
+      fetch(`${APP_SERVER}/appointmentOptions`).then(res => res.json())
+  });
 
   return (
     <section className="py-16">
@@ -30,13 +28,17 @@ const AvailableAppointment = () => {
           <span className="text-blue-600">{format(selectedDate, "PP")}</span>
         </h2>
         <div className="grid gap-8 lg:grid-cols-3 my-10">
-          {appointmentOptions.map(appointmentOption => (
-            <AppointmentOption
-              key={appointmentOption._id}
-              appointmentOption={appointmentOption}
-              setTreatment={setTreatment}
-            />
-          ))}
+          {isLoading ? (
+            <LoadingCircle />
+          ) : (
+            appointmentOptions.map(appointmentOption => (
+              <AppointmentOption
+                key={appointmentOption._id}
+                appointmentOption={appointmentOption}
+                setTreatment={setTreatment}
+              />
+            ))
+          )}
         </div>
         <div className="">
           {treatment && (
