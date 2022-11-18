@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import useTitle from "../../hooks/useTitle";
 import registrationImg from "../../images/logo.svg";
@@ -7,8 +7,11 @@ import { AuthContext } from "../../context/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { APP_SERVER } from "../../utilities/utilities";
+import useToken from "../../hooks/useToken";
 
 const Register = () => {
+  const [userCreatedEmail, setUserCreatedEmail] = useState("");
+  const [token] = useToken(userCreatedEmail);
   const navigate = useNavigate();
   const {
     register,
@@ -21,6 +24,10 @@ const Register = () => {
     useContext(AuthContext);
 
   useTitle("Register");
+
+  if (token) {
+    navigate("/");
+  }
 
   // reset the form after successful submission
   useEffect(() => {
@@ -71,8 +78,7 @@ const Register = () => {
         body: JSON.stringify(user)
       });
       const data = await response.json();
-      console.log(data);
-      navigate("/");
+      setUserCreatedEmail(email);
     } catch (error) {
       console.error(error);
     }
