@@ -1,13 +1,15 @@
 import React, { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import useTitle from "../../hooks/useTitle";
 import registrationImg from "../../images/logo.svg";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { APP_SERVER } from "../../utilities/utilities";
 
 const Register = () => {
+  const navigate = useNavigate();
   const {
     register,
     formState,
@@ -29,7 +31,6 @@ const Register = () => {
 
   // handle User Login form
   const handleUserRegistration = data => {
-    console.log(data);
     const { email, password, name, photoUrl } = data;
 
     if (!email || !password) return;
@@ -41,6 +42,7 @@ const Register = () => {
         updateUserProfile(profile)
           .then(data => {
             toast.success("Account updated successfully!");
+            saveUserToDb(email, name);
           })
           .catch(err => {
             err?.code && toast.error(err.code);
@@ -56,6 +58,24 @@ const Register = () => {
       .finally(() => {
         setAuthLoading(false);
       });
+  };
+
+  const saveUserToDb = async (email, name) => {
+    try {
+      const user = { email, name };
+      const response = await fetch(`${APP_SERVER}/users`, {
+        method: "post",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify(user)
+      });
+      const data = await response.json();
+      console.log(data);
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -160,12 +180,12 @@ const Register = () => {
                     minLength: {
                       value: 6,
                       message: "Password must be 6 chars long"
-                    },
-                    pattern: {
-                      value:
-                        /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z]).{8}$/,
-                      message: "Must be strong 💪"
                     }
+                    // , pattern: {
+                    //   value:
+                    //     /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z]).{8}$/,
+                    //   message: "Must be strong 💪"
+                    // }
                   })}
                 />
                 <label
