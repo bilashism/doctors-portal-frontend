@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useTitle from "../../hooks/useTitle";
 import loginImg from "../../images/logo.svg";
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { GoogleAuthProvider } from "firebase/auth";
 import { APP_SERVER } from "../../utilities/utilities";
 import { useForm } from "react-hook-form";
+import useToken from "../../hooks/useToken";
 
 const Login = () => {
   const {
@@ -22,11 +23,14 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
-
+  const [userLoginEmail, setUserLoginEmail] = useState("");
+  const [token] = useToken(userLoginEmail);
   // console.log(location);
   const googleProvider = new GoogleAuthProvider();
   useTitle("Login");
-
+  if (token) {
+    navigate(from, { replace: true });
+  }
   // reset the form after successful submission
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
@@ -57,7 +61,8 @@ const Login = () => {
       .then(user => {
         toast.success("Login successful!");
         // form.reset();
-        navigate(from, { replace: true });
+        setUserLoginEmail(email);
+
         console.log(user);
       })
       .catch(err => {
