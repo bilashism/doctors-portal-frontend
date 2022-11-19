@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import LoadingCircle from "../../../components/ui/LoadingCircle";
+import useTitle from "../../../hooks/useTitle";
 import { APP_SERVER } from "../../../utilities/utilities";
 import UserRow from "./UserRow";
 
 const AllUsers = () => {
+  useTitle("All Users");
   const {
     data: allUsers = [],
     isLoading,

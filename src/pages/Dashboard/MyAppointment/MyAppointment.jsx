@@ -4,10 +4,11 @@ import LoadingCircle from "../../../components/ui/LoadingCircle";
 import { AuthContext } from "../../../context/AuthProvider/AuthProvider";
 import { APP_SERVER } from "../../../utilities/utilities";
 import AppointmentRow from "./AppointmentRow";
+import useTitle from "../../../hooks/useTitle";
 
 const MyAppointment = () => {
   const { user } = useContext(AuthContext);
-
+  useTitle("My Appointment");
   const { data: bookingsData = [], isLoading } = useQuery({
     queryKey: ["bookings", user?.email],
     queryFn: () =>

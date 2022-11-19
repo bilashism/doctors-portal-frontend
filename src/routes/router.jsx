@@ -3,6 +3,7 @@ import NotFound from "../components/NotFound";
 import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout";
 import Main from "../layouts/Main/Main";
 import Appointment from "../pages/Appointment/Appointment";
+import AddDoctor from "../pages/Dashboard/AddDoctor/AddDoctor";
 import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 import Dashboard from "../pages/Dashboard/Dashboard/Dashboard";
 import MyAppointment from "../pages/Dashboard/MyAppointment/MyAppointment";
@@ -54,6 +55,14 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AllUsers />
+          </AdminRoute>
+        )
+      },
+      {
+        path: "/dashboard/addDoctor",
+        element: (
+          <AdminRoute>
+            <AddDoctor />
           </AdminRoute>
         )
       }
