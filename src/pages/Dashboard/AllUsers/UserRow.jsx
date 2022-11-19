@@ -4,7 +4,6 @@ import { APP_SERVER } from "../../../utilities/utilities";
 
 const UserRow = ({ user, idx, refetch }) => {
   const { _id, email, name, role } = user;
-
   const makeAdmin = id => {
     fetch(`${APP_SERVER}/users/admin/${id}`, {
       method: "put",
