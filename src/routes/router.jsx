@@ -3,6 +3,7 @@ import NotFound from "../components/NotFound";
 import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout";
 import Main from "../layouts/Main/Main";
 import Appointment from "../pages/Appointment/Appointment";
+import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 import Dashboard from "../pages/Dashboard/Dashboard/Dashboard";
 import MyAppointment from "../pages/Dashboard/MyAppointment/MyAppointment";
 import Home from "../pages/Home/Home";
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <MyAppointment />
+      },
+      {
+        path: "/dashboard/allUsers",
+        element: <AllUsers />
       }
     ],
     errorElement: <NotFound />
