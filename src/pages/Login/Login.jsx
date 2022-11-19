@@ -55,7 +55,7 @@ const Login = () => {
 
   // handle User Login form
   const handleUserLogin = data => {
-    console.log(data);
+    // console.log(data);
     const { email, password } = data;
     userLogin(email, password)
       .then(user => {
