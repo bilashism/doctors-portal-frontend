@@ -8,9 +8,11 @@ import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 import Dashboard from "../pages/Dashboard/Dashboard/Dashboard";
 import ManageDoctors from "../pages/Dashboard/ManageDoctors/ManageDoctors";
 import MyAppointment from "../pages/Dashboard/MyAppointment/MyAppointment";
+import Payment from "../pages/Dashboard/Payment/Payment";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import { APP_SERVER } from "../utilities/utilities";
 import AdminRoute from "./AdminRoute/AdminRoute";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 
@@ -74,6 +76,20 @@ export const router = createBrowserRouter([
             <ManageDoctors />
           </AdminRoute>
         )
+      },
+      {
+        path: "/dashboard/payment/:id",
+        element: (
+          <AdminRoute>
+            <Payment />
+          </AdminRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`${APP_SERVER}/bookings/${params.id}`, {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            }
+          })
       }
     ],
     errorElement: <NotFound />

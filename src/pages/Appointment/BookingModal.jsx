@@ -19,6 +19,7 @@ const BookingModal = ({ treatment, setTreatment, refetch }) => {
 
     const booking = {
       treatmentName: treatment?.name,
+      price: treatment?.price,
       userSelectedDate,
       selectedSlot: slot,
       patientName: name,
@@ -30,7 +31,8 @@ const BookingModal = ({ treatment, setTreatment, refetch }) => {
     fetch(`${APP_SERVER}/bookings`, {
       method: "post",
       headers: {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`
       },
       body: JSON.stringify(booking)
     })

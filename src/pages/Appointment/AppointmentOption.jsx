@@ -1,7 +1,7 @@
 import React from "react";
 
 const AppointmentOption = ({ appointmentOption, setTreatment }) => {
-  const { _id, name, slots } = appointmentOption;
+  const { _id, name, price, slots } = appointmentOption;
 
   return (
     <article className="text-center flex flex-col gap-4 border px-3 py-4 shadow-sm">
@@ -10,6 +10,7 @@ const AppointmentOption = ({ appointmentOption, setTreatment }) => {
       <p className="">
         {slots.length} slot{slots.length >= 2 ? "s" : ""} available
       </p>
+      <p className="">Price: ${price}</p>
       <div className="">
         <label
           disabled={slots.length === 0}
