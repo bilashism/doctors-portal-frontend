@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthProvider/AuthProvider";
 import useTitle from "../../../hooks/useTitle";
 import { APP_SERVER, IMG_DB_API_KEY } from "../../../utilities/utilities";
@@ -15,7 +17,7 @@ const AddDoctor = () => {
   } = useForm();
   const { createUser, updateUserProfile, setAuthLoading } =
     useContext(AuthContext);
-
+  const navigate = useNavigate();
   useTitle("Add A Doctor");
 
   const { data: specialties = [], isLoading } = useQuery({
@@ -41,19 +43,40 @@ const AddDoctor = () => {
     const imgBBUrl = `https://api.imgbb.com/1/upload?expiration=600&key=${IMG_DB_API_KEY}`;
     addDoctorFormData.append("image", photo);
 
-    for (const [key, val] of addDoctorFormData.entries()) {
-      console.log(key, val);
-    }
-
     fetch(imgBBUrl, {
       method: "post",
       body: addDoctorFormData
     })
       .then(res => res.json())
       .then(result => {
-        console.log(result);
         if (result.success) {
-          console.log(data.url);
+          // toast.success("Image added successfully!");
+          const doctorProfile = {
+            name: data.name,
+            email: data.email,
+            specialty: data.specialty,
+            imgId: result.data.id,
+            imgUrl: result.data.url
+          };
+
+          fetch(`${APP_SERVER}/doctors`, {
+            method: "post",
+            headers: {
+              "content-type": "application/json",
+              authorization: `Bearer ${localStorage.getItem("accessToken")}`
+            },
+            body: JSON.stringify(doctorProfile)
+          })
+            .then(res => res.json())
+            .then(data => {
+              if (data.insertedId) {
+                toast.success(
+                  `${doctorProfile.name} has been added successfully!`
+                );
+                navigate("/dashboard/manageDoctors");
+              }
+            })
+            .catch(err => console.error(err));
         }
       })
       .catch(err => console.error(err));
@@ -156,7 +179,7 @@ const AddDoctor = () => {
               <button
                 type="submit"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center   ">
-                Register
+                Add doctor
               </button>
             </div>
           </form>
