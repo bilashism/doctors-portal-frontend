@@ -40,7 +40,9 @@ const AddDoctor = () => {
     const addDoctorFormData = new FormData();
     const photo = data.photo[0];
 
-    const imgBBUrl = `https://api.imgbb.com/1/upload?expiration=600&key=${IMG_DB_API_KEY}`;
+    const imgBBUrl = `https://api.imgbb.com/1/upload?key=${IMG_DB_API_KEY}`;
+
+    // the field value in the formData has to be exactly === "image"
     addDoctorFormData.append("image", photo);
 
     fetch(imgBBUrl, {
