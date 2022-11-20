@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import ConfirmationModal from "../../../components/ConfirmationModal";
 import LoadingCircle from "../../../components/ui/LoadingCircle";
+import useTitle from "../../../hooks/useTitle";
 import { APP_SERVER } from "../../../utilities/utilities";
 import DoctorRow from "./DoctorRow";
 
@@ -46,7 +47,7 @@ const ManageDoctors = () => {
       }
     }
   });
-
+  useTitle("Manage Doctors");
   if (isLoading) {
     return <LoadingCircle />;
   }
