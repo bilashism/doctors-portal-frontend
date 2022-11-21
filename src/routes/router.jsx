@@ -79,11 +79,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/payment/:id",
-        element: (
-          <AdminRoute>
-            <Payment />
-          </AdminRoute>
-        ),
+        element: <Payment />,
         loader: ({ params }) =>
           fetch(`${APP_SERVER}/bookings/${params.id}`, {
             headers: {
